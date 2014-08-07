@@ -1,3 +1,4 @@
 *.pyc
+*.swp
 env
 var/test.db

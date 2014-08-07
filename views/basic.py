@@ -7,7 +7,7 @@ from flask import (
 import os
 
 
-@app.route("/")
+@app.route('/')
 def main():
     return render_template('main.html')
 

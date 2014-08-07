@@ -3,7 +3,7 @@ Schedule/badge management site for during Electromagnetic Field camp.
 Starting
 ========
 ```
-sudo apt-get install python-virtualenv sqlite3
+sudo apt-get install python-virtualenv python-dev sqlite3
 make init
 make update
 make data

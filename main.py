@@ -1,5 +1,6 @@
 from flask import Flask
 from flask.ext.mail import Mail
+from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_wtf import CsrfProtect
 
@@ -16,7 +17,10 @@ logger.setup_logging(app)
 
 db = SQLAlchemy(app)
 mail = Mail(app)
+login_manager = LoginManager()
 
+from views import *
+from models import *
 
 if __name__ == "__main__":
     app.run()
