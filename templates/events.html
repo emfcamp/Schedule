@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+<body>
+    <div class="container">
+        {% include 'navigation.html' %}
+
+        <table class="table table-stdiped">
+            <tr>
+                <th>Time</th>
+                <th>Speaker(s)</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Location</th>
+            </tr>
+            {% for event in events %}
+                <tr>
+                    <td>{{event.start_time}}</td>
+                    <td>{{event.speaker_names}}</td>
+                    <td>{{event.title}}</td>
+                    <td>{{event.type_id}}</td>
+                    <td>{{event.location}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

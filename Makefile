@@ -11,6 +11,9 @@ endif
 run:
 	$(ENV) SETTINGS_FILE=$(SETTINGS) python ./main.py
 
+import_schedule:
+	$(ENV) SETTINGS_FILE=$(SETTINGS) python ./import_schedule.py import_schedule
+
 init:
 	virtualenv ./env
 
