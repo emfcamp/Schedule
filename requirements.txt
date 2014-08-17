@@ -21,3 +21,4 @@ pyflakes==0.8.1
 requests==2.3.0
 webassets==0.10.1
 wsgiref==0.1.2
+bcrypt==1.0.2
