@@ -9,3 +9,4 @@ class Form(BaseForm):
 
 import basic  # noqa
 import users  # noqa
+import events
