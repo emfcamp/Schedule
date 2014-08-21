@@ -1,4 +1,5 @@
 from main import db
+import pprint
 
 class Event(db.Model):
     __tablename__ = 'event'
@@ -17,5 +18,15 @@ class Event(db.Model):
         self.id = id
         self.title = title
         self.type_id = type_id
+
+    def matches_day(self, day_of_month):
+        if day_of_month == 0:
+            return self.start_time == None
+        else:
+            if not self.start_time:
+                return False
+            print self.start_time.strftime('%d')
+            return int(self.start_time.strftime('%d')) == day_of_month
+
 
 

@@ -1,7 +1,7 @@
 from main import app
 
 from flask import (
-    render_template, send_from_directory,
+    render_template, send_from_directory, redirect
 )
 
 import os
@@ -9,7 +9,7 @@ import os
 
 @app.route('/')
 def main():
-    return render_template('main.html')
+    return redirect("/events", code=302)
 
 
 @app.route('/favicon.ico')

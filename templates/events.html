@@ -5,24 +5,48 @@
     <div class="container">
         {% include 'navigation.html' %}
 
-        <table class="table table-stdiped">
-            <tr>
-                <th>Time</th>
-                <th>Speaker(s)</th>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Location</th>
-            </tr>
-            {% for event in events %}
+        {% for day_of_festival in [29, 30, 31, 0] %}
+            <h3>
+                {% if (day_of_festival == 0) %}
+                    All Days or not yet scheduled
+                {% endif %}
+                {% if (day_of_festival == 29) %}
+                    Friday
+                {% endif %}
+                {% if (day_of_festival == 30) %}
+                    Saturday
+                {% endif %}
+                {% if (day_of_festival == 31) %}
+                    Sunday
+                {% endif %}
+            </h3>
+            <table class="table table-stdiped">
                 <tr>
-                    <td>{{event.start_time}}</td>
-                    <td>{{event.speaker_names}}</td>
-                    <td>{{event.title}}</td>
-                    <td>{{event.type_id}}</td>
-                    <td>{{event.location}}</td>
+                    {% if (day_of_festival != 0) %}
+                        <th>Start</th>
+                        <th>End</th>
+                    {% endif %}
+                    <th>Speaker(s)</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Location</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for event in events %}
+                    {% if (event.matches_day(day_of_festival)) %}
+                        <tr>
+                            {% if (day_of_festival != 0) %}
+                                <td>{{event.start_time.strftime('%H:%M')}}</td>
+                                <td>{{event.end_time.strftime('%H:%M')}}</td>
+                            {% endif %}
+                            <td>{{event.speaker_names}}</td>
+                            <td>{{event.title}}</td>
+                            <td>{{event.type_id}}</td>
+                            <td>{{event.location_name}}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% endfor %}
     </div>
 
     {% include 'footer.html' %}
