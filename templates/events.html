@@ -2,9 +2,9 @@
 <html lang="en">
 {% include 'head.html' %}
 <body>
-    <div class="container">
-        {% include 'navigation.html' %}
+    {% include 'navigation.html' %}
 
+    <div class="container">
         {% for day_of_festival in [29, 30, 31, 0] %}
             <h3>
                 {% if (day_of_festival == 0) %}

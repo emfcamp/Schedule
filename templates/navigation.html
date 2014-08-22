@@ -1,6 +1,6 @@
 <!-- Static navbar -->
-<div class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -13,6 +13,15 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/events">Events</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav pull-right">
+                {% if current_user.is_authenticated() %}
+                    <li><a href="/home">Communication Settings</a></li>
+                    <li><a href="/logout">Log out</a></li>
+                {% else %}
+                    <li><a href="/login">Log in</a></li>
+                {% endif %}
             </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->

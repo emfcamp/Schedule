@@ -18,6 +18,8 @@ from wtforms import TextField, PasswordField, HiddenField
 
 import re
 
+import pprint
+
 login_manager.setup_app(app, add_context_processor=True)
 app.login_manager.login_view = 'login'
 
@@ -46,14 +48,15 @@ class LoginForm(Form):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated():
-        return redirect(request.args.get('next', url_for('tickets')))
+        return redirect('/home')
 
     form = LoginForm(request.form, next=request.args.get('next'))
     if request.method == 'POST' and form.validate():
+
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(form.next.data or url_for('tickets'))
+            return redirect('/home')
         else:
             flash("Invalid login details!")
 
@@ -62,7 +65,6 @@ def login():
 
 class SignupForm(Form):
     badgeid = TextField('Badge ID', [Required()])
-    name = TextField('Full name', [Required()])
     password = PasswordField('Password', [Required(), EqualTo('confirm', message="Passwords do not match")])
     confirm = PasswordField('Confirm password', [Required()])
     email = TextField('Email', [Email()])
@@ -71,33 +73,18 @@ class SignupForm(Form):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated():
-        return redirect(url_for('tickets'))
+        return redirect('/home')
 
-    form = SignupForm(request.form, next=request.args.get('next'))
+    form = SignupForm(request.form)
 
-    if form.validate_on_submit():
-        user = User(form.badgeid.data, form.name.data)
+    if form.email.data:
+        user = User(form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
-
-        try:
-            db.session.commit()
-        except IntegrityError, e:
-            app.logger.warn("Exception %r adding user for %s, assuming duplicate badge", e, form.badgeid.data)
-            flash("This badge is already registered. Please log in, or reset your password if you've forgotten it.")
-            return redirect(url_for('login'))
-
+        db.session.commit()
         login_user(user)
 
-        if user.email:
-            # send a welcome email.
-            msg = Message("Welcome to Electromagnetic Field",
-                    sender=app.config['SCHEDULE_EMAIL'],
-                    recipients=[user.email])
-            msg.body = render_template('welcome-email.txt', user=user)
-            mail.send(msg)
-
-        return redirect(form.next.data or url_for('tickets'))
+        return redirect('/home')
 
     return render_template('signup.html', form=form)
 
@@ -157,7 +144,7 @@ def reset_password():
         user.set_password(form.password.data)
         db.session.commit()
 
-        return redirect(url_for('tickets'))
+        return redirect("/")
 
     return render_template('reset-password.html', form=form)
 

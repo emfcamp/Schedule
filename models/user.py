@@ -9,21 +9,21 @@ from datetime import datetime, timedelta
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    badgeid = db.Column(db.String, unique=True, nullable=False)
-    name = db.Column(db.String, nullable=False)
+    badgeid = db.Column(db.String, unique=True, nullable=True)
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=True)
     phone = db.Column(db.String, nullable=True)
 
-    def __init__(self, badgeid, name):
-        self.badgeid = badgeid
-        self.name = name
+    def __init__(self, email):
+        self.email = email
 
     def set_password(self, password):
         self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
     def check_password(self, password):
-        return bcrypt.hashpw(password.encode('utf8'), self.password) == self.password
+        password = password.encode('utf8')
+        password_hash = self.password.encode('ascii')
+        return bcrypt.hashpw(password, password_hash) == password_hash
 
 
 class PasswordReset(db.Model):

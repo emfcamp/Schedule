@@ -5,7 +5,7 @@ class Event(db.Model):
     __tablename__ = 'event'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    type_id = db.Column(db.Integer, nullable=False)
+    type_id = db.Column(db.String, nullable=False)
 
     abstract = db.Column(db.String, nullable=True)
     speaker_names = db.Column(db.String, nullable=True)
@@ -25,7 +25,6 @@ class Event(db.Model):
         else:
             if not self.start_time:
                 return False
-            print self.start_time.strftime('%d')
             return int(self.start_time.strftime('%d')) == day_of_month
 
 

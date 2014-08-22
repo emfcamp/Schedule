@@ -1,0 +1,27 @@
+{% from "_formhelpers.html" import render_field %}
+
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+<body>
+    {% include 'navigation.html' %}
+
+    <div class="container">
+        <h3>Signup</h3>
+
+        <form method="post" role="form" class="form-horizontal">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                {{ render_field(form.email, True) }}
+                {{ render_field(form.password, True) }}
+                {{ render_field(form.confirm, True) }}
+                <div class="form-actions col-sm-offset-3 col-sm-9">
+                    <button type="submit" name="Create" class="btn btn-primary debounce">Register Now</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

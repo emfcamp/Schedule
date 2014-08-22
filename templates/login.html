@@ -1,0 +1,31 @@
+
+{% from "_formhelpers.html" import render_field %}
+
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+<body>
+    {% include 'navigation.html' %}
+
+    <div class="container">
+        <h3>Log In</h3>
+        <div class="row">
+            <form method="post" role="form" class="form-horizontal col-md-4">
+                {{form.hidden_tag()}}
+                {{ render_field(form.email) }}
+                {{ render_field(form.password) }}
+                <div class="form-actions btn-group">
+                    <button type="submit" class="btn btn-success debounce">Log in</button>
+                </div>
+                <div class="form-actions btn-group">
+                    <a class="btn btn-primary" href="{{ url_for('forgot_password') }}">Forgot password</a>
+                    <a class="btn btn-primary" href="{{ url_for('signup', next=form.next.data) }}">Sign up</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>
