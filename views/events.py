@@ -16,7 +16,7 @@ import re
 
 @app.route('/events', methods=['GET'])
 def events():
-    events = Event.query.all()
+    events = Event.query.order_by(Event.location_id, Event.start_time).all()
     return render_template("events.html", events=events)
 
 
