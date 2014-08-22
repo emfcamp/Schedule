@@ -11,7 +11,8 @@ make data
 
 For live (or if you prefer):
 ```
-sudo apt-get install postgresql
+sudo apt-get install postgresql postgresql-server-dev-9.1 libffi-dev
+pip install psycopg2
 ```
 
 Running
