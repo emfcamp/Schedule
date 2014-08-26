@@ -25,7 +25,7 @@ class EventFavouriteForm(Form):
 @app.route('/events', methods=['GET'])
 def events():
     form = EventFavouriteForm()
-    events = Event.query.order_by(Event.location_id, Event.start_time).all()
+    events = Event.query.order_by(Event.start_time, Event.location_id).all()
     return render_template("events.html", events=events, form=form)
 
 @app.route('/events/<id>/favourite', methods=['POST'])
