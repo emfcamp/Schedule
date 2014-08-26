@@ -28,4 +28,14 @@ class Event(db.Model):
             return int(self.start_time.strftime('%d')) == day_of_month
 
 
+class EventFavourite(db.Model):
+    __tablename__ = 'event_favourite'
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
 
+    user = db.relationship("User", backref="event_favourites")
+    event = db.relationship("Event")
+
+    def __init__(self, event=None, user=None):
+        self.event = event
+        self.user = user

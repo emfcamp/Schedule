@@ -1,5 +1,6 @@
 from main import db
 from flask.ext.login import UserMixin
+from sqlalchemy.ext.associationproxy import association_proxy
 import bcrypt
 import os
 import base64
@@ -13,6 +14,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=True)
     phone = db.Column(db.String, nullable=True)
+    events = association_proxy('event_favourites', 'event')
 
     def __init__(self, email):
         self.email = email
@@ -42,4 +44,3 @@ class PasswordReset(db.Model):
 
     def expired(self):
         return self.expires < datetime.utcnow()
-
