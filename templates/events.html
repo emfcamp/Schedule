@@ -22,6 +22,9 @@
             </h3>
             <table class="table table-stdiped">
                 <tr>
+                    {% if current_user.is_authenticated() %}
+                      <th>&nbsp;</th>
+                    {% endif %}
                     {% if (day_of_festival != 0) %}
                         <th>Start</th>
                         <th>End</th>
@@ -34,6 +37,21 @@
                 {% for event in events %}
                     {% if (event.matches_day(day_of_festival)) %}
                         <tr>
+                          {% if current_user.is_authenticated() %}
+                            <td>
+                            {% if event in current_user.events %}
+                              <form action="/events/{{event.id}}/unfavourite" method="POST">
+                                {{ form.hidden_tag() }}
+                                <input type="image" src="/static/star_full.png" class="star" alt="Remove from favourites" />
+                              </form>
+                            {% else %}
+                              <form action="/events/{{event.id}}/favourite" method="POST">
+                                {{ form.hidden_tag() }}
+                                <input type="image" src="/static/star_empty.png" class="star" alt="Add to favourites" />
+                              </form>
+                            {% endif %}
+                            </td>
+                          {% endif %}
                             {% if (day_of_festival != 0) %}
                                 <td>{{event.start_time.strftime('%H:%M')}}</td>
                                 <td>{{event.end_time.strftime('%H:%M')}}</td>
