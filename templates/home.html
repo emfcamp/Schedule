@@ -1,4 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
+{% from "_eventtable.html" import event_table %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +7,7 @@
 <body>
     {% include 'navigation.html' %}
     <div class="container">
-        <h3>Home</h3>
+        <h3>Your Information</h3>
         <form method="post" role="form" class="form-horizontal">
             <fieldset>
                 <p>This is the name that will be shown on your badge.</p>
@@ -16,6 +17,7 @@
 
             </fieldset>
 
+        <h3>Notification Methods</h3>
             <fieldset>
                 <p>
                     We'll use this information to inform you of upcoming talks you're interested in (</a href="/events">you can mark them here</a>), either via SMS or a notification to the badge. If you don't fancy using one of those channels, just leave the field blank.
@@ -33,8 +35,40 @@
             </fieldset>
         </form>
 
+        <h3>Your schedule</h3>
+        {% if user.events %}
+          {{ event_table(event_data, user.events, form) }}
+        {% else %}
+          <p>You haven't added any events to your favourites yet! Visit <a href="/events">the events page</a> to add some.</p>
+        {% endif %}
     </div>
 
     {% include 'footer.html' %}
+
+    <script>
+        $(document).ready(function() {
+            $(".fave").submit(function(event_handle){
+                $.ajax({
+                    type: "POST",
+                    url: event_handle.target.action,
+                    data: $(event_handle.target).serialize()+'&json=true',
+                    success: function(data)
+                    {
+                        if (data.favourite)
+                        {
+                            $('#fave'+data.event_id)[0].action = '/events/'+data.event_id+'/unfavourite';
+                            $('#fave'+data.event_id).find('input[type=image]')[0].src = '/static/star_full.png';
+                        }
+                        else
+                        {
+                            $('#fave'+data.event_id)[0].action = '/events/'+data.event_id+'/favourite';
+                            $('#fave'+data.event_id).find('input[type=image]')[0].src = '/static/star_empty.png';
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

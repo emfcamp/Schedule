@@ -4,6 +4,7 @@ from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_wtf import CsrfProtect
 
+import filters
 import logging
 import logger
 
@@ -12,6 +13,7 @@ logging.basicConfig(level=logging.NOTSET)
 app = Flask(__name__)
 csrf = CsrfProtect(app)
 app.config.from_envvar('SETTINGS_FILE')
+app.jinja_env.filters['day_sort'] = filters.day_sort
 
 logger.setup_logging(app)
 
