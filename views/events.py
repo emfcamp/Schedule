@@ -25,8 +25,9 @@ class EventFavouriteForm(Form):
 @app.route('/events', methods=['GET'])
 def events():
     form = EventFavouriteForm()
-    events = Event.query.order_by(Event.location_id, Event.start_time).all()
-    return render_template("events.html", events=events, form=form)
+    events = Event.query.order_by(Event.start_time, Event.location_id).all()
+    event_data = Event.group_events_by_date(events)
+    return render_template("events.html", event_data=event_data, form=form)
 
 @app.route('/events/<id>/favourite', methods=['POST'])
 @login_required
@@ -37,7 +38,7 @@ def add_favourite(id):
         db.session.commit()
     if 'json' in request.form:
         return jsonify(favourite=event in current_user.events, event_id=event.id)
-    return redirect(url_for('events'))
+    return redirect(request.referrer or url_for('events'))
 
 @app.route('/events/<id>/unfavourite', methods=['POST'])
 @login_required
@@ -48,4 +49,4 @@ def remove_favourite(id):
         db.session.commit()
     if 'json' in request.form:
         return jsonify(favourite=event in current_user.events, event_id=event.id)
-    return redirect(url_for('events'))
+    return redirect(request.referrer or url_for('events'))
