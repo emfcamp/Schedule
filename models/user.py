@@ -14,7 +14,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=True)
     phone = db.Column(db.String, nullable=True)
+    name = db.Column(db.String(10), nullable=True)
     nickname = db.Column(db.String(10), nullable=True)
+
     events = association_proxy('event_favourites', 'event')
 
     def __init__(self, email):
