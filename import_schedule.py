@@ -28,6 +28,7 @@ class ImportSchedule(Command):
             event.abstract = event_data['abstract']
 
             if 'room' in event_data:
+                #TODO: notify on talk ID changing
                 event.location_name = event_data['room']['name']
                 event.location_id = event_data['room']['id']
             else:
@@ -35,6 +36,7 @@ class ImportSchedule(Command):
                 event.location_id = None
 
             if 'start_time' in event_data:
+                #TODO: notify on talk time changing
                 event.start_time = datetime.datetime.strptime(event_data['start_time'], "%Y-%m-%dT%H:%M:%SZ")
                 event.end_time = datetime.datetime.strptime(event_data['end_time'], "%Y-%m-%dT%H:%M:%SZ")
             else:

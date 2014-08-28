@@ -1,11 +1,13 @@
 from main import db
+from main import app
 from flask.ext.login import UserMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 import bcrypt
 import os
 import base64
+import requests
 from datetime import datetime, timedelta
-
+from subprocess import call
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -29,6 +31,10 @@ class User(db.Model, UserMixin):
         password = password.encode('utf8')
         password_hash = self.password.encode('ascii')
         return bcrypt.hashpw(password, password_hash) == password_hash
+
+    def notify(self, notification):
+        if self.badgeid:
+            call([app.config['DM_PATH'], self.badgeid, notification])
 
 
 class PasswordReset(db.Model):
