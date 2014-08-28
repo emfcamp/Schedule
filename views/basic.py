@@ -11,7 +11,7 @@ from flask.ext.login import (
     login_user, login_required, logout_user, current_user,
 )
 
-from wtforms.validators import Required, Email, EqualTo, ValidationError
+from wtforms.validators import Required, Email, EqualTo, ValidationError, Length
 from wtforms import TextField, PasswordField, HiddenField
 
 import os
@@ -34,6 +34,8 @@ def main():
 class HomeForm(Form):
     badgeid = TextField('Badge ID', [])
     phone = TextField('Mobile phone number', [])
+    nickname = TextField('Your Name', [Length(max=10)])
+
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
@@ -42,10 +44,12 @@ def home():
 
     user = User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
+        user.nickname = form.nickname.data
         user.badgeid = form.badgeid.data
         user.phone = form.phone.data
         db.session.commit()
 
+    form.phone.nickname = user.nickname
     form.phone.data = user.phone
     form.badgeid.data = user.badgeid
 
