@@ -35,7 +35,9 @@ def add_favourite(id):
     if event is not None and event not in current_user.events:
         current_user.events.append(event)
         db.session.commit()
-    return jsonify(favourite=event in current_user.events, event_id=event.id)
+    if 'json' in request.form:
+        return jsonify(favourite=event in current_user.events, event_id=event.id)
+    return redirect(url_for('events'))
 
 @app.route('/events/<id>/unfavourite', methods=['POST'])
 @login_required
@@ -44,4 +46,6 @@ def remove_favourite(id):
     if event is not None and event in current_user.events:
         EventFavourite.query.filter_by(event_id=event.id, user_id=current_user.id).delete()
         db.session.commit()
-    return jsonify(favourite=event in current_user.events, event_id=event.id)
+    if 'json' in request.form:
+        return jsonify(favourite=event in current_user.events, event_id=event.id)
+    return redirect(url_for('events'))
