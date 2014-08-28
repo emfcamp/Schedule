@@ -1,0 +1,44 @@
+{% macro event_table(event_data, favourite_events=[], form=None) %}
+{% for day in event_data.keys()|day_sort %}
+{% set events = event_data[day] %}
+  <h2>{{ day.strftime('%A') if day else "All days or not yet scheduled"}}</h2>
+  <table class="table table-stdiped">
+      <tr>
+          {% if form %}
+            <th>&nbsp;</th>
+          {% endif %}
+          <th>Start</th>
+          <th>End</th>
+          <th>Speaker(s)</th>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Location</th>
+      </tr>
+      {% for event in events %}
+            <tr>
+              {% if form %}
+                <td>
+                {% if event in favourite_events %}
+                  <form action="/events/{{event.id}}/unfavourite" method="POST">
+                    {{ form.hidden_tag() }}
+                    <input type="image" src="/static/star_full.png" class="star" alt="Remove from favourites" />
+                  </form>
+                {% else %}
+                  <form action="/events/{{event.id}}/favourite" method="POST">
+                    {{ form.hidden_tag() }}
+                    <input type="image" src="/static/star_empty.png" class="star" alt="Add to favourites" />
+                  </form>
+                {% endif %}
+                </td>
+              {% endif %}
+                <td>{{event.start_time.strftime('%H:%M') if event.start_time}}</td>
+                <td>{{event.end_time.strftime('%H:%M') if event.end_time}}</td>
+                <td>{{event.speaker_names}}</td>
+                <td>{{event.title}}</td>
+                <td>{{event.type_id}}</td>
+                <td>{{event.location_name}}</td>
+            </tr>
+      {% endfor %}
+  </table>
+  {% endfor %}
+{% endmacro %}

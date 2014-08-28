@@ -1,6 +1,7 @@
 from main import app, db, login_manager
 
 from views import Form
+from models.event import Event
 from models.user import User
 
 from flask import (
@@ -49,7 +50,8 @@ def home():
     form.phone.data = user.phone
     form.badgeid.data = user.badgeid
 
-    return render_template("home.html", user=current_user, form=form)
+    event_data = Event.group_events_by_date(user.events)
+    return render_template("home.html", user=current_user, form=form, event_data=event_data)
 
 
 @app.route('/favicon.ico')

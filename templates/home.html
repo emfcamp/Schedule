@@ -1,4 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
+{% from "_eventtable.html" import event_table %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +28,13 @@
             </fieldset>
         </form>
 
+        <hr />
+        <h3>Your schedule</h3>
+        {% if user.events %}
+          {{ event_table(event_data, user.events, form) }}
+        {% else %}
+          <p>You haven't added any events to your favourites yet! Visit <a href="/events">the events page</a> to add some.</p>
+        {% endif %}
     </div>
 
     {% include 'footer.html' %}
