@@ -19,6 +19,7 @@
         <form method="post" role="form" class="form-horizontal">
             <fieldset>
                 {{ form.hidden_tag() }}
+                {{ render_field(form.nickname, True) }}
                 {{ render_field(form.badgeid, True) }}
                 {{ render_field(form.phone, True) }}
                 <div class="form-actions col-sm-offset-3 col-sm-9">
