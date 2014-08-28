@@ -49,7 +49,7 @@ def home():
         user.phone = form.phone.data
         db.session.commit()
 
-    form.phone.nickname = user.nickname
+    form.nickname.data = user.nickname
     form.phone.data = user.phone
     form.badgeid.data = user.badgeid
 
