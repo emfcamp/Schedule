@@ -40,12 +40,12 @@
                           {% if current_user.is_authenticated() %}
                             <td>
                             {% if event in current_user.events %}
-                              <form action="/events/{{event.id}}/unfavourite" method="POST">
+                              <form action="/events/{{event.id}}/unfavourite" method="POST" class="fave" id="fave{{event.id}}">
                                 {{ form.hidden_tag() }}
-                                <input type="image" src="/static/star_full.png" class="star" alt="Remove from favourites" />
+                                <input type="image" src="/static/star_full.png" class="star" alt="Remove from favourites"/>
                               </form>
                             {% else %}
-                              <form action="/events/{{event.id}}/favourite" method="POST">
+                              <form action="/events/{{event.id}}/favourite" method="POST" class="fave" id="fave{{event.id}}">
                                 {{ form.hidden_tag() }}
                                 <input type="image" src="/static/star_empty.png" class="star" alt="Add to favourites" />
                               </form>
@@ -68,5 +68,31 @@
     </div>
 
     {% include 'footer.html' %}
+
+    <script>
+        $(document).ready(function() {
+            $(".fave").submit(function(event_handle){
+                $.ajax({
+                    type: "POST",
+                    url: event_handle.target.action,
+                    data: $(event_handle.target).serialize(),
+                    success: function(data)
+                    {
+                        if (data.favourite)
+                        {
+                            $('#fave'+data.event_id)[0].action = '/events/'+data.event_id+'/unfavourite';
+                            $('#fave'+data.event_id).find('input[type=image]')[0].src = '/static/star_full.png';
+                        }
+                        else
+                        {
+                            $('#fave'+data.event_id)[0].action = '/events/'+data.event_id+'/favourite';
+                            $('#fave'+data.event_id).find('input[type=image]')[0].src = '/static/star_empty.png';
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

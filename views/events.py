@@ -7,7 +7,7 @@ from sqlalchemy.orm import joinedload
 
 from flask import (
     render_template, redirect, request, flash,
-    url_for, _request_ctx_stack
+    url_for, _request_ctx_stack, jsonify
 )
 from flask.ext.login import (
     login_user, login_required, logout_user, current_user,
@@ -35,7 +35,7 @@ def add_favourite(id):
     if event is not None and event not in current_user.events:
         current_user.events.append(event)
         db.session.commit()
-    return redirect(url_for('events'))
+    return jsonify(favourite=event in current_user.events, event_id=event.id)
 
 @app.route('/events/<id>/unfavourite', methods=['POST'])
 @login_required
@@ -44,4 +44,4 @@ def remove_favourite(id):
     if event is not None and event in current_user.events:
         EventFavourite.query.filter_by(event_id=event.id, user_id=current_user.id).delete()
         db.session.commit()
-    return redirect(url_for('events'))
+    return jsonify(favourite=event in current_user.events, event_id=event.id)
