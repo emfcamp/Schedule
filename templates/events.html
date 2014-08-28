@@ -75,7 +75,7 @@
                 $.ajax({
                     type: "POST",
                     url: event_handle.target.action,
-                    data: $(event_handle.target).serialize(),
+                    data: $(event_handle.target).serialize()+'&json=true',
                     success: function(data)
                     {
                         if (data.favourite)
