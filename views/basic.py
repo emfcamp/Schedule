@@ -42,7 +42,9 @@ def Validate_Badge_ID(form, field):
 class HomeForm(Form):
     badgeid = TextField('Badge ID', [Validate_Badge_ID])
     phone = TextField('Mobile phone number', [])
-    nickname = TextField('Your Name', [Length(max=10)])
+    name = TextField('Your Name', [Length(max=10)])
+    nickname = TextField('Your NickName', [Length(max=10)])
+
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
@@ -51,11 +53,13 @@ def home():
 
     user = User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
+        user.name = form.name.data
         user.nickname = form.nickname.data
         user.badgeid = form.badgeid.data.upper()
         user.phone = form.phone.data
         db.session.commit()
 
+    form.name.data = user.name
     form.nickname.data = user.nickname
     form.phone.data = user.phone
     form.badgeid.data = user.badgeid

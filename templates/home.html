@@ -11,7 +11,9 @@
             <fieldset>
                 <p>This is the name that will be shown on your badge.</p>
                 {{ form.hidden_tag() }}
+                {{ render_field(form.name, True) }}
                 {{ render_field(form.nickname, True) }}
+
             </fieldset>
 
             <fieldset>
