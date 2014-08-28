@@ -27,6 +27,30 @@ class Event(db.Model):
                 return False
             return int(self.start_time.strftime('%d')) == day_of_month
 
+    def is_scheduled(self):
+        return day_of_month != 0
+
+    def day_name(self):
+        if self.start_time is None:
+            return "All days or not yet scheduled"
+        else:
+            return self.start_time.strftime('%A')
+
+    @staticmethod
+    def group_events_by_date(events):
+        days = {}
+        for event in events:
+            if event.start_time is not None:
+                if event.start_time.date() in days:
+                    days[event.start_time.date()].append(event)
+                else:
+                    days[event.start_time.date()] = [event]
+            elif None in days:
+                days[None].append(event)
+            else:
+                days[None] = [event]
+        return days
+
 
 class EventFavourite(db.Model):
     __tablename__ = 'event_favourite'
