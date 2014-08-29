@@ -14,6 +14,9 @@ run:
 import_schedule:
 	$(ENV) SETTINGS_FILE=$(SETTINGS) python ./import_schedule.py import_schedule
 
+cron:
+	$(ENV) SETTINGS_FILE=$(SETTINGS) python ./cron_notify.py notify
+
 init:
 	virtualenv ./env
 

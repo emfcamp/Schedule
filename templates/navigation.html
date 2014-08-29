@@ -17,9 +17,10 @@
 
             <ul class="nav navbar-nav pull-right">
                 {% if current_user.is_authenticated() %}
-                    <li><a href="/home">Communication Settings</a></li>
+                    <li><a href="/home">My Settings</a></li>
                     <li><a href="/logout">Log out</a></li>
                 {% else %}
+                    <li><a href="/signup">Sign Up</a></li>
                     <li><a href="/login">Log in</a></li>
                 {% endif %}
             </ul>

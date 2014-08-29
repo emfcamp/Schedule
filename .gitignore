@@ -3,3 +3,5 @@
 env
 var/test.db
 .idea
+dm.*
+*~
