@@ -8,6 +8,7 @@ import base64
 import requests
 from datetime import datetime, timedelta
 from subprocess import call
+from twilio.rest import TwilioRestClient
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -35,7 +36,9 @@ class User(db.Model, UserMixin):
     def notify(self, notification):
         if self.badgeid:
             call([app.config['DM_PATH'], self.badgeid, notification])
-
+        if self.phone:
+            t_client = TwilioRestClient(app.config['TWILIO_ACCOUNT_SID'],app.config['TWILIO_AUTH_TOKEN'])
+            print t_client.messages.create(to=self.phone, from_=app.config['TWILIO_FROM_NUMBER'], body=notification)
 
 class PasswordReset(db.Model):
     __tablename__ = 'password_reset'
