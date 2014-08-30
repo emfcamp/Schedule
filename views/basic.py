@@ -56,7 +56,8 @@ def home():
     if form.validate_on_submit():
         user.name = form.name.data
         user.nickname = form.nickname.data
-        user.badgeid = form.badgeid.data.upper()
+        if form.badgeid.data:
+            user.badgeid = form.badgeid.data.upper()
         user.phone = form.phone.data
         db.session.commit()
 
