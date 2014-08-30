@@ -58,6 +58,8 @@ def home():
         user.nickname = form.nickname.data
         if form.badgeid.data:
             user.badgeid = form.badgeid.data.upper()
+        else:
+            user.badgeid = None
         user.phone = form.phone.data
         db.session.commit()
 
