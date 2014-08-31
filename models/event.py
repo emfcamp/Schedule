@@ -1,5 +1,6 @@
 from main import db
 import pprint
+import datetime
 
 class Event(db.Model):
     __tablename__ = 'event'
@@ -18,6 +19,18 @@ class Event(db.Model):
         self.id = id
         self.title = title
         self.type_id = type_id
+
+    def in_the_past(self):
+        if self.end_time:
+            return self.end_time < datetime.datetime.now()
+        else:
+            return False
+
+    def happening_now(self):
+        if self.start_time and self.end_time:
+            return self.start_time < datetime.datetime.now() < self.end_time
+        else:
+            return False
 
     def matches_day(self, day_of_month):
         if day_of_month == 0:
