@@ -15,7 +15,7 @@
           <th>Location</th>
       </tr>
       {% for event in events %}
-            <tr>
+          <tr class="event {{ "past" if event.in_the_past()}} {{ "now" if event.happening_now()}}">
               {% if form %}
                 <td>
                 {% if event in favourite_events %}
