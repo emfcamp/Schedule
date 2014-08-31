@@ -1,4 +1,5 @@
 from jinja2 import Environment, Undefined
+import datetime
 
 def day_sort(iterable):
     if iterable is None or isinstance(iterable, Undefined):
@@ -7,8 +8,12 @@ def day_sort(iterable):
         return sorted(iterable, key=_sort_ordinal)
 
 def _sort_ordinal(date):
+    offset = 10000000000
     if date is not None:
-        return date.toordinal()
+        if date < datetime.date.today(): # It's in the past
+            return offset - date.toordinal()
+        else:
+            return date.toordinal()
     else:
-        return 1000000000
+        return offset
 
